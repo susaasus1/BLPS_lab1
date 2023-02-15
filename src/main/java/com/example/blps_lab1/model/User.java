@@ -10,10 +10,8 @@ import java.util.Set;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     private String login;
+
     private String password;
 
     private String email;
@@ -27,21 +25,19 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String login, String password, String email, Set<Role> roles) {
-        this.id = id;
+    public User(String login, String password, String email) {
+        this.login = login;
+        this.password = password;
+        this.email = email;
+    }
+
+    public User(String login, String password, String email, Set<Role> roles) {
         this.login = login;
         this.password = password;
         this.email = email;
         this.roles = roles;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getLogin() {
         return login;

@@ -5,17 +5,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.io.Serial;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class UserDetailsImpl implements UserDetails {
+public class CookUserDetails implements UserDetails {
 
-    @Serial
-    private static final long serialVersionUID = 1L;
-
-    private Long id;
     private String login;
 
     private String password;
@@ -30,22 +25,20 @@ public class UserDetailsImpl implements UserDetails {
         return authorities;
     }
 
-    public UserDetailsImpl(Long id, String login, String password, String email, Collection<? extends GrantedAuthority> authorities) {
-        this.id = id;
+    public CookUserDetails(String login, String password, String email, Collection<? extends GrantedAuthority> authorities) {
         this.login = login;
         this.password = password;
         this.email = email;
         this.authorities = authorities;
     }
 
-    public static UserDetailsImpl build(User user) {
+    public static CookUserDetails build(User user) {
 
         List<GrantedAuthority> authorities = user.getRoles().stream()
                 .map(roles -> new SimpleGrantedAuthority(roles.getName().name()))
                 .collect(Collectors.toList());
 
-        return new UserDetailsImpl(user.getId(),
-                user.getLogin(), user.getPassword(), user.getEmail(), authorities);
+        return new CookUserDetails(user.getLogin(), user.getPassword(), user.getEmail(), authorities);
     }
 
     @Override
@@ -78,9 +71,6 @@ public class UserDetailsImpl implements UserDetails {
         return true;
     }
 
-    public Long getId() {
-        return id;
-    }
 
     public String getEmail() {
         return email;

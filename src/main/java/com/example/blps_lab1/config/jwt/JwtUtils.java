@@ -1,6 +1,6 @@
 package com.example.blps_lab1.config.jwt;
 
-import com.example.blps_lab1.security.UserDetailsImpl;
+import com.example.blps_lab1.security.CookUserDetails;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -21,7 +21,7 @@ public class JwtUtils {
 
 
     public String generateJwtToken(Authentication authentication) {
-        UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
+        CookUserDetails userPrincipal = (CookUserDetails) authentication.getPrincipal();
         return Jwts.builder().setSubject((userPrincipal.getUsername())).setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
                 .signWith(key, SignatureAlgorithm.HS512).compact();

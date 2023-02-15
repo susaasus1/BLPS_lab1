@@ -1,6 +1,6 @@
 package com.example.blps_lab1.config.jwt;
 
-import com.example.blps_lab1.security.UserDetailsServiceImpl;
+import com.example.blps_lab1.security.CookUserDetailsService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,11 +19,11 @@ import java.io.IOException;
 public class AuthTokenFilter extends OncePerRequestFilter {
     private final JwtUtils jwtUtils;
 
-    private final UserDetailsServiceImpl userDetailsServiceImpl;
+    private final CookUserDetailsService cookUserDetailsService;
 
-    public AuthTokenFilter(JwtUtils jwtUtils, UserDetailsServiceImpl userDetailsServiceImpl) {
+    public AuthTokenFilter(JwtUtils jwtUtils, CookUserDetailsService cookUserDetailsService) {
         this.jwtUtils = jwtUtils;
-        this.userDetailsServiceImpl = userDetailsServiceImpl;
+        this.cookUserDetailsService = cookUserDetailsService;
     }
 
     @Override
@@ -36,7 +36,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             String jwt = parseJwt(request);
             if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
                 String login = jwtUtils.getLoginFromJwtToken(jwt);
-                UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(login);
+                UserDetails userDetails = cookUserDetailsService.loadUserByUsername(login);
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails,
                         null,
                         userDetails.getAuthorities());

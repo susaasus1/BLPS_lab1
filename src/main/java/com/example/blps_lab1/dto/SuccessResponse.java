@@ -1,13 +1,13 @@
 package com.example.blps_lab1.dto;
 
-public class Response {
-    private String message;
+public class SuccessResponse {
+    public String message;
 
-    public Response() {
+    public SuccessResponse(String message) {
+        this.message = message;
     }
 
-    public Response(String message) {
-        this.message = message;
+    public SuccessResponse() {
     }
 
     public String getMessage() {
