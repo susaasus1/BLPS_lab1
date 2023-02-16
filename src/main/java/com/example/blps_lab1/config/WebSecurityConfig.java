@@ -49,7 +49,7 @@ public class WebSecurityConfig {
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeHttpRequests()
-                .requestMatchers("/oasis/auth/**").permitAll()
+                .requestMatchers("/cook/auth/**").permitAll()
                 .anyRequest().authenticated();
 
 

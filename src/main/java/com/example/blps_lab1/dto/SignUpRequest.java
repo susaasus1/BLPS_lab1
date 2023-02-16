@@ -7,14 +7,12 @@ public class SignUpRequest {
     private String password;
     private String email;
 
-    private Set<String> roles;
 
 
-    public SignUpRequest(String login, String password, String email, Set<String> roles) {
+    public SignUpRequest(String login, String password, String email) {
         this.login = login;
         this.password = password;
         this.email = email;
-        this.roles = roles;
     }
 
     public String getLogin() {
@@ -41,11 +39,6 @@ public class SignUpRequest {
         this.email = email;
     }
 
-    public Set<String> getRoles() {
-        return roles;
-    }
 
-    public void setRoles(Set<String> roles) {
-        this.roles = roles;
-    }
+
 }

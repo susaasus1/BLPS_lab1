@@ -40,7 +40,7 @@ public class AuthController {
 
 
         authService.saveUser(signUpRequest.getLogin(), signUpRequest.getPassword(),
-                signUpRequest.getEmail(), signUpRequest.getRoles());
+                signUpRequest.getEmail());
 
         return ResponseEntity.ok(new SuccessResponse("User registered successfully!"));
 

@@ -51,8 +51,7 @@ public class AuthService {
         return new Jwt(jwt);
     }
 
-    public User saveUser(String login, String password, String email,
-                         Set<String> roles) throws UserAlreadyExistException, RoleNotFoundException {
+    public User saveUser(String login, String password, String email) throws UserAlreadyExistException, RoleNotFoundException {
         if (userRepository.findByLogin(login).isPresent())
             throw new UserAlreadyExistException("This login is already taken! Try another");
 
@@ -61,28 +60,10 @@ public class AuthService {
 
 
         Set<Role> user_roles = new HashSet<>();
-        if (roles == null) {
-            Role userRole = roleRepository
-                    .findByName(ERole.ROLE_USER)
-                    .orElseThrow(() -> new RoleNotFoundException("USER role not found!"));
-            user_roles.add(userRole);
-        } else {
-            for (String role : roles) {
-                switch (role.toUpperCase()) {
-                    case "ADMIN":
-                        Role adminRole = roleRepository
-                                .findByName(ERole.ROLE_ADMIN)
-                                .orElseThrow(() -> new RoleNotFoundException("ADMIN role not found!"));
-                        user_roles.add(adminRole);
-                        break;
-                    default:
-                        Role userRole = roleRepository
-                                .findByName(ERole.ROLE_USER)
-                                .orElseThrow(() -> new RoleNotFoundException("USER role not found!"));
-                        user_roles.add(userRole);
-                }
-            }
-        }
+        Role userRole = roleRepository
+                .findByName(ERole.ROLE_USER)
+                .orElseThrow(() -> new RoleNotFoundException("USER role not found!"));
+        user_roles.add(userRole);
 
         User user = new User(login, passwordEncoder.encode(password),
                 email, user_roles);
