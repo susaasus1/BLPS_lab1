@@ -34,7 +34,7 @@ public class Recipe {
 
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
-            name = "Recipe_tastes",
+            name = "recipe_tastes",
             joinColumns = {@JoinColumn(name = "id_recipe")},
             inverseJoinColumns = {@JoinColumn(name = "id_taste")}
     )
