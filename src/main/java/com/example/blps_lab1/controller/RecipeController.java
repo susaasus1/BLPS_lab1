@@ -7,6 +7,7 @@ import com.example.blps_lab1.dto.SuccessResponse;
 import com.example.blps_lab1.exception.CuisineNotFoundException;
 import com.example.blps_lab1.exception.DishNotFoundException;
 import com.example.blps_lab1.exception.TasteNotFoundException;
+import com.example.blps_lab1.model.Recipe;
 import com.example.blps_lab1.service.RecipeService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
@@ -33,12 +34,12 @@ public class RecipeController {
             DishNotFoundException, TasteNotFoundException, CuisineNotFoundException, UsernameNotFoundException {
         String login = jwtUtils.getLoginFromJwtToken(authTokenFilter.parseJwt(httpServletRequest));
 
-        recipeService.saveRecipe(login, addRecipeRequest.getDish_name(), addRecipeRequest.getDescription(),
+        Recipe recipe = recipeService.saveRecipe(login, addRecipeRequest.getDish_name(), addRecipeRequest.getDescription(),
                 addRecipeRequest.getCountPortion(),
                 addRecipeRequest.getNationalCuisine_name(),
                 addRecipeRequest.getTastes_names());
 
-        return ResponseEntity.ok(new SuccessResponse("Recipe added successfully!"));
+        return ResponseEntity.ok(new SuccessResponse(recipe.toString()));
 
     }
 }
