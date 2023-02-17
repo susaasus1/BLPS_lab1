@@ -15,7 +15,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Dish {
     @Id
-    private Integer id;
+    private Long id;
     @Column(nullable = false, unique = true)
     private String name;
     @Column(nullable = false, length = 512, unique = true)

@@ -1,8 +1,7 @@
 package com.example.blps_lab1.controller;
 
 import com.example.blps_lab1.dto.ErrorResponse;
-import com.example.blps_lab1.exception.RoleNotFoundException;
-import com.example.blps_lab1.exception.UserAlreadyExistException;
+import com.example.blps_lab1.exception.*;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,6 +47,25 @@ public class ErrorHandlingController {
 
     @ExceptionHandler(RoleNotFoundException.class)
     public ResponseEntity<ErrorResponse> onRoleNotFoundException(RoleNotFoundException e) {
+        ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(DishNotFoundException.class)
+    public ResponseEntity<ErrorResponse> onDishNotFoundException(DishNotFoundException e) {
+        ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(CuisineNotFoundException.class)
+    public ResponseEntity<ErrorResponse> onCuisineNotFoundException(CuisineNotFoundException e) {
+        ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+
+    @ExceptionHandler(TasteNotFoundException.class)
+    public ResponseEntity<ErrorResponse> onTasteNotFoundException(TasteNotFoundException e) {
         ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }

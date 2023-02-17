@@ -15,10 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Tastes {
     @Id
-    private Integer id;
+    private Long id;
     @Column(nullable = false, length = 32, unique = true)
     private String taste;
-    @ManyToMany(mappedBy = "tastes")
-    private List<Recipe> recipeList = new ArrayList<>();
-
 }

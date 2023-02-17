@@ -15,7 +15,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class NationalCuisine {
     @Id
-    private Integer id;
+    private Long id;
     @Column(nullable = false, length = 64, unique = true)
     private String cuisine;
 

@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -16,38 +15,39 @@ import java.util.List;
 @NoArgsConstructor
 public class Recipe {
     @Id
-    private Integer id;
+    private Long id;
     private String description;
     private Integer countPortion;
 
-    @JoinColumn(nullable = false,name = "id_user")
+    @JoinColumn(nullable = false, name = "user_login")
     @ManyToOne(fetch = FetchType.EAGER)
     private User user;
 
-    @JoinColumn(nullable = false,name = "id_cuisine")
+    @JoinColumn(nullable = false, name = "cuisine_id")
     @ManyToOne(fetch = FetchType.EAGER)
     private NationalCuisine nationalCuisine;
 
-    @JoinColumn(nullable = false,name = "id_dish")
+    @JoinColumn(nullable = false, name = "dish_id")
     @ManyToOne(fetch = FetchType.EAGER)
     private Dish dish;
 
     @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(
-            name = "Recipe_tastes",
-            joinColumns = {@JoinColumn(name = "id_recipe")},
-            inverseJoinColumns = {@JoinColumn(name = "id_taste")}
+            name = "recipe_tastes",
+            joinColumns = {@JoinColumn(name = "recipe_id")},
+            inverseJoinColumns = {@JoinColumn(name = "taste_id")}
     )
-    private List<Tastes> tastes = new ArrayList<>();
+    private List<Tastes> tastes;
 
 
-
-    public Recipe(String description, Integer countPortion, User user, NationalCuisine nationalCuisine, Dish dish) {
+    public Recipe(String description, Integer countPortion, User user,
+                  NationalCuisine nationalCuisine, Dish dish, List<Tastes> tastes) {
         this.description = description;
         this.countPortion = countPortion;
         this.user = user;
         this.nationalCuisine = nationalCuisine;
         this.dish = dish;
+        this.tastes = tastes;
     }
 
 }
