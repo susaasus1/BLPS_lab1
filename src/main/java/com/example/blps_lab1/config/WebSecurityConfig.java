@@ -50,6 +50,7 @@ public class WebSecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeHttpRequests()
                 .requestMatchers("/cook/auth/**").permitAll()
+                .requestMatchers("/cook/recipe/add_recipe").hasAnyRole()
                 .anyRequest().authenticated();
 
 
