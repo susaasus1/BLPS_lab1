@@ -17,6 +17,7 @@ public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(length = 4096,nullable = false)
     private String description;
     private Integer countPortion;
 
