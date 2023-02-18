@@ -1,6 +1,8 @@
 package com.example.blps_lab1.service;
 
 import com.example.blps_lab1.config.jwt.JwtUtils;
+import com.example.blps_lab1.dto.SignInRequest;
+import com.example.blps_lab1.dto.SignUpRequest;
 import com.example.blps_lab1.exception.RoleNotFoundException;
 import com.example.blps_lab1.exception.UserAlreadyExistException;
 import com.example.blps_lab1.model.ERole;
@@ -39,11 +41,11 @@ public class AuthService {
         this.roleRepository = roleRepository;
     }
 
-    public Jwt authUser(String login, String password) throws BadCredentialsException {
+    public Jwt authUser(SignInRequest signInRequest) throws BadCredentialsException {
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(
-                        login,
-                        password));
+                        signInRequest.getLogin(),
+                        signInRequest.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
@@ -51,11 +53,11 @@ public class AuthService {
         return new Jwt(jwt);
     }
 
-    public User saveUser(String login, String password, String email) throws UserAlreadyExistException, RoleNotFoundException {
-        if (userRepository.findByLogin(login).isPresent())
+    public User saveUser(SignUpRequest signUpRequest) throws UserAlreadyExistException, RoleNotFoundException {
+        if (userRepository.findByLogin(signUpRequest.getLogin()).isPresent())
             throw new UserAlreadyExistException("This login is already taken! Try another");
 
-        if (userRepository.findByEmail(email).isPresent())
+        if (userRepository.findByEmail(signUpRequest.getEmail()).isPresent())
             throw new UserAlreadyExistException("This email is already taken! Try another");
 
 
@@ -65,8 +67,8 @@ public class AuthService {
                 .orElseThrow(() -> new RoleNotFoundException("USER role not found!"));
         user_roles.add(userRole);
 
-        User user = new User(login, passwordEncoder.encode(password),
-                email, user_roles);
+        User user = new User(signUpRequest.getLogin(), passwordEncoder.encode(signUpRequest.getPassword()),
+                signUpRequest.getEmail(), user_roles);
 
         userRepository.save(user);
         return user;

@@ -70,4 +70,16 @@ public class ErrorHandlingController {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(RecipeNotFoundException.class)
+    public ResponseEntity<ErrorResponse> onRecipeNotFoundException(RecipeNotFoundException e) {
+        ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NotOwnerException.class)
+    public ResponseEntity<ErrorResponse> onNotOwnerException(NotOwnerException e) {
+        ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
 }

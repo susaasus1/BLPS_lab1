@@ -1,12 +1,13 @@
 package com.example.blps_lab1.controller;
 
+import com.example.blps_lab1.config.RecipeMapper;
 import com.example.blps_lab1.config.jwt.AuthTokenFilter;
 import com.example.blps_lab1.config.jwt.JwtUtils;
 import com.example.blps_lab1.dto.AddRecipeRequest;
+import com.example.blps_lab1.dto.DeleteRecipeRequest;
 import com.example.blps_lab1.dto.SuccessResponse;
-import com.example.blps_lab1.exception.CuisineNotFoundException;
-import com.example.blps_lab1.exception.DishNotFoundException;
-import com.example.blps_lab1.exception.TasteNotFoundException;
+import com.example.blps_lab1.dto.UpdateRecipeRequest;
+import com.example.blps_lab1.exception.*;
 import com.example.blps_lab1.model.Recipe;
 import com.example.blps_lab1.service.RecipeService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,12 +35,28 @@ public class RecipeController {
             DishNotFoundException, TasteNotFoundException, CuisineNotFoundException, UsernameNotFoundException {
         String login = jwtUtils.getLoginFromJwtToken(authTokenFilter.parseJwt(httpServletRequest));
 
-        Recipe recipe = recipeService.saveRecipe(login, addRecipeRequest.getDish_name(), addRecipeRequest.getDescription(),
-                addRecipeRequest.getCountPortion(),
-                addRecipeRequest.getNationalCuisine_name(),
-                addRecipeRequest.getTastes_names());
+        Recipe recipe = recipeService.saveRecipe(login, addRecipeRequest);
 
         return ResponseEntity.ok(new SuccessResponse(recipe.toString()));
-
     }
+
+    @DeleteMapping("/delete_recipe")
+    public ResponseEntity<?> deleteRecipe(@RequestBody DeleteRecipeRequest deleteRecipeRequest, HttpServletRequest httpServletRequest)
+            throws RecipeNotFoundException, UsernameNotFoundException, NotOwnerException {
+        String login = jwtUtils.getLoginFromJwtToken(authTokenFilter.parseJwt(httpServletRequest));
+
+        recipeService.deleteRecipe(login, deleteRecipeRequest);
+        return ResponseEntity.ok(new SuccessResponse
+                ("Рецепт по номеру " + deleteRecipeRequest.getRecipe_id() + " был успешно удален!"));
+    }
+
+    @PutMapping("/update_recipe")
+    public ResponseEntity<?> updateRecipe(@RequestBody UpdateRecipeRequest updateRecipeRequest, HttpServletRequest httpServletRequest) throws
+            RecipeNotFoundException, UsernameNotFoundException, NotOwnerException {
+        String login = jwtUtils.getLoginFromJwtToken(authTokenFilter.parseJwt(httpServletRequest));
+        recipeService.updateRecipe(login,updateRecipeRequest);
+        return ResponseEntity.ok(new SuccessResponse("Рецепт по номеру " + updateRecipeRequest.getRecipe_id() + " был успешно обновлен!"));
+    }
+
+
 }

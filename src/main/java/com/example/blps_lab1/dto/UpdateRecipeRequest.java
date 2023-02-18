@@ -2,7 +2,8 @@ package com.example.blps_lab1.dto;
 
 import java.util.List;
 
-public class AddRecipeRequest {
+public class UpdateRecipeRequest {
+    private Long recipe_id;
     private String dish_name;
 
     private String description;
@@ -13,7 +14,9 @@ public class AddRecipeRequest {
     private List<String> tastes_names;
 
 
-    public AddRecipeRequest(String dish_name, String description, Integer countPortion, String nationalCuisine_name, List<String> tastes_names) {
+    public UpdateRecipeRequest(Long recipe_id, String dish_name, String description,
+                               Integer countPortion, String nationalCuisine_name, List<String> tastes_names) {
+        this.recipe_id = recipe_id;
         this.dish_name = dish_name;
         this.description = description;
         this.countPortion = countPortion;
@@ -21,7 +24,12 @@ public class AddRecipeRequest {
         this.tastes_names = tastes_names;
     }
 
-    public AddRecipeRequest() {
+    public Long getRecipe_id() {
+        return recipe_id;
+    }
+
+    public void setRecipe_id(Long recipe_id) {
+        this.recipe_id = recipe_id;
     }
 
     public String getDish_name() {

@@ -1,6 +1,5 @@
 package com.example.blps_lab1.controller;
 
-import com.example.blps_lab1.dto.JwtResponse;
 import com.example.blps_lab1.dto.SignInRequest;
 import com.example.blps_lab1.dto.SignUpRequest;
 import com.example.blps_lab1.dto.SuccessResponse;
@@ -27,10 +26,9 @@ public class AuthController {
     public ResponseEntity<?> authUser(@RequestBody SignInRequest signInRequest) throws BadCredentialsException {
 
 
-        Jwt jwt = authService.authUser(signInRequest.getLogin(),
-                signInRequest.getPassword());
+        Jwt jwt = authService.authUser(signInRequest);
 
-        return ResponseEntity.ok(new JwtResponse(jwt.getToken()));
+        return ResponseEntity.ok(new SuccessResponse(jwt.getToken()));
 
 
     }
@@ -39,8 +37,7 @@ public class AuthController {
     public ResponseEntity<?> registerUser(@RequestBody SignUpRequest signUpRequest) throws UserAlreadyExistException, RoleNotFoundException {
 
 
-        authService.saveUser(signUpRequest.getLogin(), signUpRequest.getPassword(),
-                signUpRequest.getEmail());
+        authService.saveUser(signUpRequest);
 
         return ResponseEntity.ok(new SuccessResponse("User registered successfully!"));
 
