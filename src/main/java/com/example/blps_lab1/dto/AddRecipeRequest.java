@@ -12,13 +12,17 @@ public class AddRecipeRequest {
 
     private List<String> tastes_names;
 
+    private List<String> ingredients_names;
 
-    public AddRecipeRequest(String dish_name, String description, Integer countPortion, String nationalCuisine_name, List<String> tastes_names) {
+
+    public AddRecipeRequest(String dish_name, String description, Integer countPortion,
+                            String nationalCuisine_name, List<String> tastes_names, List<String> ingredients_names) {
         this.dish_name = dish_name;
         this.description = description;
         this.countPortion = countPortion;
         this.nationalCuisine_name = nationalCuisine_name;
         this.tastes_names = tastes_names;
+        this.ingredients_names = ingredients_names;
     }
 
     public AddRecipeRequest() {
@@ -62,5 +66,13 @@ public class AddRecipeRequest {
 
     public void setTastes_names(List<String> tastes_names) {
         this.tastes_names = tastes_names;
+    }
+
+    public List<String> getIngredients_names() {
+        return ingredients_names;
+    }
+
+    public void setIngredients_names(List<String> ingredients_names) {
+        this.ingredients_names = ingredients_names;
     }
 }

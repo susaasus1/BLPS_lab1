@@ -37,6 +37,7 @@ public class WebSecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
@@ -50,10 +51,11 @@ public class WebSecurityConfig {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeHttpRequests()
                 .requestMatchers("/cook/auth/**").permitAll()
-                .requestMatchers("/cook/recipe/add_recipe").hasAnyRole()
+                .requestMatchers("/cook/recipe/add_recipe").hasAnyRole("USER", "ADMIN")
                 .requestMatchers("/cook/recipe/delete_recipe").hasAnyRole("USER", "ADMIN")
                 .requestMatchers("/cook/recipe/update_recipe").hasAnyRole("USER", "ADMIN")
-
+                .requestMatchers("/cook/recipe/get_all_recipes").permitAll()
+                .requestMatchers("/cook/recipe/get_recipe").hasAnyRole("USER", "ADMIN")
                 .anyRequest().authenticated();
 
 

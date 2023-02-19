@@ -1,8 +1,11 @@
 package com.example.blps_lab1.dto;
 
+import jakarta.validation.constraints.NotNull;
+
 import java.util.List;
 
 public class UpdateRecipeRequest {
+    @NotNull
     private Long recipe_id;
     private String dish_name;
 
@@ -13,15 +16,20 @@ public class UpdateRecipeRequest {
 
     private List<String> tastes_names;
 
+    private List<String> ingredients_names;
+
 
     public UpdateRecipeRequest(Long recipe_id, String dish_name, String description,
-                               Integer countPortion, String nationalCuisine_name, List<String> tastes_names) {
+                               Integer countPortion,
+                               String nationalCuisine_name, List<String> tastes_names,
+                               List<String> ingredients_names) {
         this.recipe_id = recipe_id;
         this.dish_name = dish_name;
         this.description = description;
         this.countPortion = countPortion;
         this.nationalCuisine_name = nationalCuisine_name;
         this.tastes_names = tastes_names;
+        this.ingredients_names = ingredients_names;
     }
 
     public Long getRecipe_id() {
@@ -70,5 +78,13 @@ public class UpdateRecipeRequest {
 
     public void setTastes_names(List<String> tastes_names) {
         this.tastes_names = tastes_names;
+    }
+
+    public List<String> getIngredients_names() {
+        return ingredients_names;
+    }
+
+    public void setIngredients_names(List<String> ingredients_names) {
+        this.ingredients_names = ingredients_names;
     }
 }

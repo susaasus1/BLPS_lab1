@@ -17,7 +17,7 @@ public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(length = 4096,nullable = false)
+    @Column(length = 4096, nullable = false)
     private String description;
     private Integer countPortion;
 
@@ -41,15 +41,38 @@ public class Recipe {
     )
     private List<Tastes> tastes;
 
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(
+            name = "recipe_ingredients",
+            joinColumns = {@JoinColumn(name = "recipe_id")},
+            inverseJoinColumns = {@JoinColumn(name = "ingredient_id")}
+    )
+    private List<Ingredients> ingredients;
 
-    public Recipe(String description, Integer countPortion, User user,
-                  NationalCuisine nationalCuisine, Dish dish, List<Tastes> tastes) {
+
+    public Recipe(Long id, String description, Integer countPortion,
+                  User user, NationalCuisine nationalCuisine, Dish dish, List<Tastes> tastes,
+                  List<Ingredients> ingredients) {
+        this.id = id;
         this.description = description;
         this.countPortion = countPortion;
         this.user = user;
         this.nationalCuisine = nationalCuisine;
         this.dish = dish;
         this.tastes = tastes;
+        this.ingredients = ingredients;
+    }
+
+    public Recipe(String description, Integer countPortion, User user,
+                  NationalCuisine nationalCuisine, Dish dish, List<Tastes> tastes,
+                  List<Ingredients> ingredients) {
+        this.description = description;
+        this.countPortion = countPortion;
+        this.user = user;
+        this.nationalCuisine = nationalCuisine;
+        this.dish = dish;
+        this.tastes = tastes;
+        this.ingredients = ingredients;
     }
 
 }

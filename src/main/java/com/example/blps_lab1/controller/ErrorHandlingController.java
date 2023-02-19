@@ -82,4 +82,16 @@ public class ErrorHandlingController {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(IngredientNotFoundException.class)
+    public ResponseEntity<ErrorResponse> onIngredientNotFoundExceptionException(IngredientNotFoundException e) {
+        ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(AscDescException.class)
+    public ResponseEntity<ErrorResponse> onAscDescException(AscDescException e) {
+        ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+
 }
