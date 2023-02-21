@@ -14,7 +14,7 @@ public class AddRecipeRequest {
     private String dish_name;
 
     @NotBlank(message = "Укажите описание рецепта!")
-    @Size(min = 1, max = 512, message = "Укажите описание рецепта! От 1 до 512 символов")
+    @Size(min = 1, max = 4096, message = "Укажите описание рецепта! От 1 до 4096 символов")
     private String description;
     @NotNull(message = "Укажите количество порций!")
     @Min(value = 1, message = "Количество порций не может быть меньше 1!")

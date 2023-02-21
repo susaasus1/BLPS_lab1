@@ -1,5 +1,6 @@
 package com.example.blps_lab1.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,5 +14,4 @@ public class GetRecipeRequest {
     public GetRecipeRequest(Long recipe_id) {
         this.recipe_id = recipe_id;
     }
-
 }

@@ -33,7 +33,7 @@ public class Recipe {
     @ManyToOne(fetch = FetchType.EAGER)
     private Dish dish;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.REFRESH})
     @JoinTable(
             name = "recipe_tastes",
             joinColumns = {@JoinColumn(name = "recipe_id")},
@@ -41,7 +41,7 @@ public class Recipe {
     )
     private List<Tastes> tastes;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
+    @ManyToMany(cascade = {CascadeType.REFRESH})
     @JoinTable(
             name = "recipe_ingredients",
             joinColumns = {@JoinColumn(name = "recipe_id")},

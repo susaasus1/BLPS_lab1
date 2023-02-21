@@ -66,6 +66,7 @@ public class RecipeService {
         Recipe recipe = findRecipeById(deleteRecipeRequest.getRecipe_id());
         User user = userService.findUserByLogin(login);
         checkUserOnRecipeOwner(user, recipe);
+
         recipeRepository.delete(recipe);
     }
 

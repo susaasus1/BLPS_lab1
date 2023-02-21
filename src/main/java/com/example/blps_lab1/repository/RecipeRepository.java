@@ -4,6 +4,8 @@ import com.example.blps_lab1.model.Dish;
 import com.example.blps_lab1.model.NationalCuisine;
 import com.example.blps_lab1.model.Recipe;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,4 +19,5 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
     List<Recipe> findAllByDish(Dish dish);
 
     List<Recipe> findAllById(Iterable<Long> longs);
+
 }

@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Validated
@@ -39,7 +40,10 @@ public class RecipeController {
 
         Recipe recipe = recipeService.saveRecipe(login, addRecipeRequest);
 
-        return ResponseEntity.ok(recipe);
+        return ResponseEntity.ok(new RecipeResponse(recipe.getId(),
+                recipe.getDescription(), recipe.getCountPortion(), recipe.getUser().getLogin(),
+                recipe.getNationalCuisine(), recipe.getDish(), recipe.getTastes(),
+                recipe.getIngredients()));
     }
 
     @DeleteMapping("/delete_recipe")
@@ -63,16 +67,26 @@ public class RecipeController {
     }
 
     @GetMapping("/get_all_recipes")
-    public ResponseEntity<?> getAllRecipes(GetAllRecipesRequest getAllRecipesRequest) throws CuisineNotFoundException, DishNotFoundException {
+    public ResponseEntity<?> getAllRecipes(@RequestBody GetAllRecipesRequest getAllRecipesRequest) throws CuisineNotFoundException, DishNotFoundException {
         List<Recipe> allRecipes = recipeService.getAllRecipes(getAllRecipesRequest);
-        return ResponseEntity.ok(allRecipes);
+        List<RecipeResponse> recipeResponses = new ArrayList<>();
+        allRecipes.forEach(recipe -> {
+            recipeResponses.add(new RecipeResponse(recipe.getId(),
+                    recipe.getDescription(), recipe.getCountPortion(), recipe.getUser().getLogin(),
+                    recipe.getNationalCuisine(), recipe.getDish(), recipe.getTastes(),
+                    recipe.getIngredients()));
+        });
+        return ResponseEntity.ok(recipeResponses);
     }
 
     @GetMapping("/get_recipe")
-    public ResponseEntity<?> getRecipe(@Valid GetRecipeRequest getRecipeRequest)
+    public ResponseEntity<?> getRecipe(@Valid @RequestBody GetRecipeRequest getRecipeRequest)
             throws RecipeNotFoundException {
         Recipe recipe = recipeService.findRecipeById(getRecipeRequest.getRecipe_id());
-        return ResponseEntity.ok(recipe);
+        return ResponseEntity.ok(new RecipeResponse(recipe.getId(),
+                recipe.getDescription(), recipe.getCountPortion(), recipe.getUser().getLogin(),
+                recipe.getNationalCuisine(), recipe.getDish(), recipe.getTastes(),
+                recipe.getIngredients()));
     }
 
 }
