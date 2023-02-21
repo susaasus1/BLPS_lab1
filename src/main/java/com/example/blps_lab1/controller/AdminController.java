@@ -9,9 +9,12 @@ import com.example.blps_lab1.service.DishService;
 import com.example.blps_lab1.service.IngredientsService;
 import com.example.blps_lab1.service.NationalCuisineService;
 import com.example.blps_lab1.service.TastesService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+@Validated
 @RestController
 @RequestMapping("/admin")
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -29,26 +32,26 @@ public class AdminController {
     }
 
     @PostMapping("/add_dish")
-    public ResponseEntity<?> addDish(@RequestBody AddDishRequest addDishRequest) throws DishAlreadyExistException {
+    public ResponseEntity<?> addDish(@Valid @RequestBody AddDishRequest addDishRequest) throws DishAlreadyExistException {
         dishService.saveDish(addDishRequest);
         return ResponseEntity.ok(new SuccessResponse("Блюдо " + addDishRequest.getDishName() + " успешно добавлено в базу!"));
     }
 
     @PostMapping("/add_taste")
-    public ResponseEntity<?> addTaste(@RequestBody AddTasteRequest addTasteRequest) throws TasteAlreadyExistException {
+    public ResponseEntity<?> addTaste(@Valid @RequestBody AddTasteRequest addTasteRequest) throws TasteAlreadyExistException {
         tastesService.saveTaste(addTasteRequest);
         return ResponseEntity.ok(new SuccessResponse("Вкус " + addTasteRequest.getTaste() + " успешно добавлено в базу!"));
     }
 
     @PostMapping("/add_ingredient")
-    public ResponseEntity<?> addIngredient(@RequestBody AddIngredientRequest addIngredientRequest) throws IngredientAlreadyExistException {
+    public ResponseEntity<?> addIngredient(@Valid @RequestBody AddIngredientRequest addIngredientRequest) throws IngredientAlreadyExistException {
         ingredientsService.saveIngredient(addIngredientRequest);
-        return ResponseEntity.ok(new SuccessResponse("Блюдо " + addIngredientRequest.getIngredientName() + " успешно добавлено в базу!"));
+        return ResponseEntity.ok(new SuccessResponse("Ингредиент " + addIngredientRequest.getIngredientName() + " успешно добавлено в базу!"));
     }
 
     @PostMapping("/add_cuisine")
-    public ResponseEntity<?> addCuisine(@RequestBody AddCuisineRequest addCuisineRequest) throws CuisineAlreadyExistException {
+    public ResponseEntity<?> addCuisine(@Valid @RequestBody AddCuisineRequest addCuisineRequest) throws CuisineAlreadyExistException {
         nationalCuisineService.saveCuisine(addCuisineRequest);
-        return ResponseEntity.ok(new SuccessResponse("Блюдо " + addCuisineRequest.getCuisine() + " успешно добавлено в базу!"));
+        return ResponseEntity.ok(new SuccessResponse("Национальная кухня " + addCuisineRequest.getCuisine() + " успешно добавлено в базу!"));
     }
 }
