@@ -55,6 +55,7 @@ public class WebSecurityConfig {
                 .requestMatchers("/cook/recipe/delete_recipe").hasAnyRole("USER", "ADMIN")
                 .requestMatchers("/cook/recipe/update_recipe").hasAnyRole("USER", "ADMIN")
                 .requestMatchers("/cook/recipe/get_all_recipes").permitAll()
+                .requestMatchers("/admin/**").hasRole("ADMIN")
                 .requestMatchers("/cook/recipe/get_recipe").hasAnyRole("USER", "ADMIN")
                 .anyRequest().authenticated();
 

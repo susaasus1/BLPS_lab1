@@ -1,5 +1,7 @@
 package com.example.blps_lab1.service;
 
+import com.example.blps_lab1.dto.AddCuisineRequest;
+import com.example.blps_lab1.exception.CuisineAlreadyExistException;
 import com.example.blps_lab1.exception.CuisineNotFoundException;
 import com.example.blps_lab1.model.NationalCuisine;
 import com.example.blps_lab1.repository.NationalCuisineRepository;
@@ -14,7 +16,14 @@ public class NationalCuisineService {
         this.nationalCuisineRepository = nationalCuisineRepository;
     }
 
-    public NationalCuisine findNationalCuisineByName(String cuisine) throws CuisineNotFoundException{
-        return nationalCuisineRepository.findNationalCuisineByCuisine(cuisine). orElseThrow(() -> new CuisineNotFoundException("Нац. кухня " + cuisine + " не существует!"));
+    public NationalCuisine findNationalCuisineByName(String cuisine) throws CuisineNotFoundException {
+        return nationalCuisineRepository.findNationalCuisineByCuisine(cuisine).orElseThrow(() -> new CuisineNotFoundException("Нац. кухня " + cuisine + " не существует!"));
+    }
+
+    public void saveCuisine(AddCuisineRequest addCuisineRequest) throws CuisineAlreadyExistException {
+        NationalCuisine cuisine = new NationalCuisine(addCuisineRequest.getCuisine());
+        if (nationalCuisineRepository.existsNationalCuisineByCuisine(addCuisineRequest.getCuisine()))
+            throw new CuisineAlreadyExistException("Национальная кухня " + addCuisineRequest.getCuisine() + " уже есть в базе данных!");
+        nationalCuisineRepository.save(cuisine);
     }
 }

@@ -1,5 +1,8 @@
 package com.example.blps_lab1.service;
 
+
+import com.example.blps_lab1.dto.AddIngredientRequest;
+import com.example.blps_lab1.exception.IngredientAlreadyExistException;
 import com.example.blps_lab1.exception.IngredientNotFoundException;
 import com.example.blps_lab1.model.Ingredients;
 import com.example.blps_lab1.repository.IngredientsRepository;
@@ -29,5 +32,12 @@ public class IngredientsService {
             ingredientsList.add(ingredient);
         }
         return ingredientsList;
+    }
+
+    public void saveIngredient(AddIngredientRequest addIngredientRequest) throws IngredientAlreadyExistException {
+        Ingredients ingredient = new Ingredients(addIngredientRequest.getIngredientName(), addIngredientRequest.getDescription());
+        if (ingredientsRepository.existsIngredientsByName(addIngredientRequest.getIngredientName()))
+            throw new IngredientAlreadyExistException("Ингредиент " + addIngredientRequest.getIngredientName() + " уже есть в базе данных!");
+        ingredientsRepository.save(ingredient);
     }
 }

@@ -11,5 +11,5 @@ import java.util.Optional;
 public interface TastesRepository extends JpaRepository<Tastes, Long> {
 
     Optional<Tastes> findTastesByTaste(String taste);
-
+    boolean existsTastesByTaste(String taste);
 }

@@ -1,9 +1,13 @@
 package com.example.blps_lab1.dto;
 
 import jakarta.validation.constraints.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+@Data
+@NoArgsConstructor
 public class AddRecipeRequest {
     @NotBlank(message = "Укажите название блюда!")
     @Size(min = 1, max = 255, message = "Укажите название блюда! От 1 до 255 символов")
@@ -38,54 +42,4 @@ public class AddRecipeRequest {
         this.ingredients_names = ingredients_names;
     }
 
-    public AddRecipeRequest() {
-    }
-
-    public String getDish_name() {
-        return dish_name;
-    }
-
-    public void setDish_name(String dish_name) {
-        this.dish_name = dish_name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Integer getCountPortion() {
-        return countPortion;
-    }
-
-    public void setCountPortion(Integer countPortion) {
-        this.countPortion = countPortion;
-    }
-
-    public String getNationalCuisine_name() {
-        return nationalCuisine_name;
-    }
-
-    public void setNationalCuisine_name(String nationalCuisine_name) {
-        this.nationalCuisine_name = nationalCuisine_name;
-    }
-
-    public List<String> getTastes_names() {
-        return tastes_names;
-    }
-
-    public void setTastes_names(List<String> tastes_names) {
-        this.tastes_names = tastes_names;
-    }
-
-    public List<String> getIngredients_names() {
-        return ingredients_names;
-    }
-
-    public void setIngredients_names(List<String> ingredients_names) {
-        this.ingredients_names = ingredients_names;
-    }
 }

@@ -16,4 +16,8 @@ public class Tastes {
     private Long id;
     @Column(nullable = false, length = 32, unique = true)
     private String taste;
+
+    public Tastes(String taste) {
+        this.taste = taste;
+    }
 }

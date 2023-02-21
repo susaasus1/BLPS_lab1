@@ -11,5 +11,5 @@ public interface NationalCuisineRepository extends JpaRepository<NationalCuisine
 
     Optional<NationalCuisine> findNationalCuisineByCuisine(String cuisine);
 
-
+    boolean existsNationalCuisineByCuisine(String cuisine);
 }

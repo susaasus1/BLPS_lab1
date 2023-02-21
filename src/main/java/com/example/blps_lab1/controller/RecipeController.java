@@ -63,13 +63,13 @@ public class RecipeController {
     }
 
     @GetMapping("/get_all_recipes")
-    public ResponseEntity<?> getAllRecipes(HttpServletRequest httpServletRequest, GetAllRecipesRequest getAllRecipesRequest) throws CuisineNotFoundException, DishNotFoundException {
+    public ResponseEntity<?> getAllRecipes(GetAllRecipesRequest getAllRecipesRequest) throws CuisineNotFoundException, DishNotFoundException {
         List<Recipe> allRecipes = recipeService.getAllRecipes(getAllRecipesRequest);
         return ResponseEntity.ok(allRecipes);
     }
 
     @GetMapping("/get_recipe")
-    public ResponseEntity<?> getRecipe(HttpServletRequest httpServletRequest, @Valid GetRecipeRequest getRecipeRequest)
+    public ResponseEntity<?> getRecipe(@Valid GetRecipeRequest getRecipeRequest)
             throws RecipeNotFoundException {
         Recipe recipe = recipeService.findRecipeById(getRecipeRequest.getRecipe_id());
         return ResponseEntity.ok(recipe);

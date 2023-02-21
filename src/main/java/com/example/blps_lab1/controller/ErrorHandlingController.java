@@ -88,6 +88,24 @@ public class ErrorHandlingController {
         ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
-
-
+    @ExceptionHandler(DishAlreadyExistException.class)
+    public ResponseEntity<ErrorResponse> onDishAlreadyExistException(DishAlreadyExistException e) {
+        ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(TasteAlreadyExistException.class)
+    public ResponseEntity<ErrorResponse> onTasteAlreadyExistException(TasteAlreadyExistException e) {
+        ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(IngredientAlreadyExistException.class)
+    public ResponseEntity<ErrorResponse> onIngredientAlreadyExistException(IngredientAlreadyExistException e) {
+        ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(CuisineAlreadyExistException.class)
+    public ResponseEntity<ErrorResponse> onCuisineAlreadyExistException(CuisineAlreadyExistException e) {
+        ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
 }

@@ -1,5 +1,7 @@
 package com.example.blps_lab1.service;
 
+import com.example.blps_lab1.dto.AddTasteRequest;
+import com.example.blps_lab1.exception.TasteAlreadyExistException;
 import com.example.blps_lab1.exception.TasteNotFoundException;
 import com.example.blps_lab1.model.Tastes;
 import com.example.blps_lab1.repository.TastesRepository;
@@ -30,5 +32,11 @@ public class TastesService {
         return tastesList;
     }
 
+    public void saveTaste(AddTasteRequest addTasteRequest) throws TasteAlreadyExistException {
+        Tastes taste = new Tastes(addTasteRequest.getTaste());
+        if (tastesRepository.existsTastesByTaste(addTasteRequest.getTaste()))
+            throw new TasteAlreadyExistException("Вкус " + addTasteRequest.getTaste() + " уже есть в базе данных!");
+        tastesRepository.save(taste);
+    }
 
 }

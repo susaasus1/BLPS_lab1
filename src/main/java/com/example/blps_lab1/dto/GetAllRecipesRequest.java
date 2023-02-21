@@ -1,8 +1,12 @@
 package com.example.blps_lab1.dto;
 
 
-import java.util.List;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.util.List;
+@Data
+@NoArgsConstructor
 public class GetAllRecipesRequest {
 
     private boolean desc;
@@ -26,44 +30,4 @@ public class GetAllRecipesRequest {
         this.ingredients = ingredients;
     }
 
-    public boolean isDesc() {
-        return desc;
-    }
-
-    public void setDesc(boolean desc) {
-        this.desc = desc;
-    }
-
-
-    public String getNationalCuisine() {
-        return nationalCuisine;
-    }
-
-    public void setNationalCuisine(String nationalCuisine) {
-        this.nationalCuisine = nationalCuisine;
-    }
-
-    public String getDish() {
-        return dish;
-    }
-
-    public void setDish(String dish) {
-        this.dish = dish;
-    }
-
-    public List<String> getTastes() {
-        return tastes;
-    }
-
-    public void setTastes(List<String> tastes) {
-        this.tastes = tastes;
-    }
-
-    public List<String> getIngredients() {
-        return ingredients;
-    }
-
-    public void setIngredients(List<String> ingredients) {
-        this.ingredients = ingredients;
-    }
 }
