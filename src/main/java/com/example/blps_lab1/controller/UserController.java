@@ -6,7 +6,7 @@ import com.example.blps_lab1.dto.SuccessResponse;
 import com.example.blps_lab1.exception.RoleNotFoundException;
 import com.example.blps_lab1.exception.UserAlreadyExistException;
 import com.example.blps_lab1.model.Jwt;
-import com.example.blps_lab1.service.AuthService;
+import com.example.blps_lab1.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
@@ -14,19 +14,19 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/cook/auth")
 @CrossOrigin(origins = "*", maxAge = 3600)
-public class AuthController {
+public class UserController {
 
-    private final AuthService authService;
+    private final UserService userService;
 
-    public AuthController(AuthService authService) {
-        this.authService = authService;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
     @PostMapping("/sign_in")
     public ResponseEntity<?> authUser(@RequestBody SignInRequest signInRequest) throws BadCredentialsException {
 
 
-        Jwt jwt = authService.authUser(signInRequest);
+        Jwt jwt = userService.authUser(signInRequest);
 
         return ResponseEntity.ok(new SuccessResponse(jwt.getToken()));
 
@@ -37,9 +37,9 @@ public class AuthController {
     public ResponseEntity<?> registerUser(@RequestBody SignUpRequest signUpRequest) throws UserAlreadyExistException, RoleNotFoundException {
 
 
-        authService.saveUser(signUpRequest);
+        userService.saveUser(signUpRequest);
 
-        return ResponseEntity.ok(new SuccessResponse("User registered successfully!"));
+        return ResponseEntity.ok(new SuccessResponse("Пользователь успешно зарегистрирован!"));
 
 
     }

@@ -16,6 +16,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,14 +25,14 @@ import java.util.Set;
 
 
 @Service
-public class AuthService {
+public class UserService {
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
 
-    public AuthService(AuthenticationManager authenticationManager,
+    public UserService(AuthenticationManager authenticationManager,
                        JwtUtils jwtUtils, UserRepository userRepository,
                        PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
         this.authenticationManager = authenticationManager;
@@ -49,22 +50,39 @@ public class AuthService {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
-
         return new Jwt(jwt);
     }
 
-    public User saveUser(SignUpRequest signUpRequest) throws UserAlreadyExistException, RoleNotFoundException {
-        if (userRepository.findByLogin(signUpRequest.getLogin()).isPresent())
-            throw new UserAlreadyExistException("This login is already taken! Try another");
+    public User findUserByLogin(String login) throws UsernameNotFoundException {
+        return userRepository.findByLogin(login).orElseThrow(() -> new UsernameNotFoundException("Пользователь с логином " + login + " не существует"));
+    }
 
-        if (userRepository.findByEmail(signUpRequest.getEmail()).isPresent())
-            throw new UserAlreadyExistException("This email is already taken! Try another");
+    public User findUserByEmail(String email) throws UsernameNotFoundException {
+        return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("Пользователь с почтой " + email + " не существует"));
+    }
+
+
+    public boolean checkLoginOnExist(String login) {
+        return userRepository.existsUserByLogin(login);
+    }
+
+    public boolean checkEmailOnExist(String email) {
+        return userRepository.existsUserByEmail(email);
+    }
+
+
+    public User saveUser(SignUpRequest signUpRequest) throws UserAlreadyExistException, RoleNotFoundException {
+        if (checkLoginOnExist(signUpRequest.getLogin()))
+            throw new UserAlreadyExistException("Этот логин уже занят! Попробуйте другой");
+
+        if (checkEmailOnExist(signUpRequest.getEmail()))
+            throw new UserAlreadyExistException("Эта почта уже занята! Попробуйте другую");
 
 
         Set<Role> user_roles = new HashSet<>();
         Role userRole = roleRepository
                 .findByName(ERole.ROLE_USER)
-                .orElseThrow(() -> new RoleNotFoundException("USER role not found!"));
+                .orElseThrow(() -> new RoleNotFoundException("Роль USER не найдена!"));
         user_roles.add(userRole);
 
         User user = new User(signUpRequest.getLogin(), passwordEncoder.encode(signUpRequest.getPassword()),

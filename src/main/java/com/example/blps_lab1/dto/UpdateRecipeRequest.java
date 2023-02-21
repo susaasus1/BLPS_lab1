@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
 public class UpdateRecipeRequest {
-    @NotNull
+    @NotNull(message = "Укажите номер рецепта!")
     private Long recipe_id;
     private String dish_name;
 

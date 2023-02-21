@@ -1,6 +1,9 @@
 package com.example.blps_lab1.dto;
 
+import jakarta.validation.constraints.NotNull;
+
 public class GetRecipeRequest {
+    @NotNull(message = "Укажите номер рецепта!")
     private Long recipe_id;
 
     public GetRecipeRequest(Long recipe_id) {

@@ -1,6 +1,9 @@
 package com.example.blps_lab1.dto;
 
+import jakarta.validation.constraints.NotNull;
+
 public class DeleteRecipeRequest {
+    @NotNull(message = "Укажите номер рецепта!")
     private Long recipe_id;
 
     public DeleteRecipeRequest(Long recipe_id) {

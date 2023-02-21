@@ -27,6 +27,7 @@ public class ErrorHandlingController {
         ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<ErrorResponse> onUsernameNotFoundException(UsernameNotFoundException e) {
         ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
@@ -88,10 +89,5 @@ public class ErrorHandlingController {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(AscDescException.class)
-    public ResponseEntity<ErrorResponse> onAscDescException(AscDescException e) {
-        ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
-        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
-    }
 
 }

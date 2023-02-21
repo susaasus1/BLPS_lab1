@@ -10,8 +10,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
-
-import java.sql.SQLException;
 import java.util.List;
 
 @RestController
@@ -47,7 +45,7 @@ public class RecipeController {
 
         recipeService.deleteRecipe(login, deleteRecipeRequest);
         return ResponseEntity.ok(new SuccessResponse
-                ("Рецепт по номеру " + deleteRecipeRequest.getRecipe_id() + " был успешно удален!"));
+                ("Рецепт с номером " + deleteRecipeRequest.getRecipe_id() + " был успешно удален!"));
     }
 
     @PutMapping("/update_recipe")
@@ -57,11 +55,11 @@ public class RecipeController {
             CuisineNotFoundException, TasteNotFoundException, IngredientNotFoundException {
         String login = jwtUtils.getLoginFromJwtToken(authTokenFilter.parseJwt(httpServletRequest));
         recipeService.updateRecipe(login, updateRecipeRequest);
-        return ResponseEntity.ok(new SuccessResponse("Рецепт по номеру " + updateRecipeRequest.getRecipe_id() + " был успешно обновлен!"));
+        return ResponseEntity.ok(new SuccessResponse("Рецепт с номером " + updateRecipeRequest.getRecipe_id() + " был успешно обновлен!"));
     }
 
     @GetMapping("/get_all_recipes")
-    public ResponseEntity<?> getAllRecipes(HttpServletRequest httpServletRequest, GetAllRecipesRequest getAllRecipesRequest) throws AscDescException, CuisineNotFoundException, DishNotFoundException {
+    public ResponseEntity<?> getAllRecipes(HttpServletRequest httpServletRequest, GetAllRecipesRequest getAllRecipesRequest) throws CuisineNotFoundException, DishNotFoundException {
         List<Recipe> allRecipes = recipeService.getAllRecipes(getAllRecipesRequest);
         return ResponseEntity.ok(allRecipes);
     }
@@ -69,7 +67,7 @@ public class RecipeController {
     @GetMapping("/get_recipe")
     public ResponseEntity<?> getRecipe(HttpServletRequest httpServletRequest, GetRecipeRequest getRecipeRequest)
             throws RecipeNotFoundException {
-        Recipe recipe = recipeService.getRecipeById(getRecipeRequest.getRecipe_id());
+        Recipe recipe = recipeService.findRecipeById(getRecipeRequest.getRecipe_id());
         return ResponseEntity.ok(recipe);
     }
 

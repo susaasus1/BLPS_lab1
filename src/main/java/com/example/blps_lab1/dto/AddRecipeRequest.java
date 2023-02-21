@@ -1,17 +1,30 @@
 package com.example.blps_lab1.dto;
 
+import jakarta.validation.constraints.*;
+
 import java.util.List;
 
 public class AddRecipeRequest {
+    @NotBlank(message = "Укажите название блюда!")
+    @Size(min = 1, max = 255, message = "Укажите название блюда! От 1 до 255 символов")
     private String dish_name;
 
+    @NotBlank(message = "Укажите описание рецепта!")
+    @Size(min = 1, max = 512, message = "Укажите описание рецепта! От 1 до 512 символов")
     private String description;
+    @NotNull(message = "Укажите количество порций!")
+    @Min(value = 1, message = "Количество порций не может быть меньше 1!")
+    @Max(value = 100, message = "Предел порций - 100")
     private Integer countPortion;
 
+    @NotBlank(message = "Укажите национальную кухню!")
+    @Size(min = 1, max = 64, message = "Укажите национальную кухню! От 1 до 64 символов")
     private String nationalCuisine_name;
 
+    @NotNull(message = "Укажите вкусы!")
     private List<String> tastes_names;
 
+    @NotNull(message = "Укажите ингредиенты!")
     private List<String> ingredients_names;
 
 
