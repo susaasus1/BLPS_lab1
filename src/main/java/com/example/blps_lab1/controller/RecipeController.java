@@ -7,11 +7,15 @@ import com.example.blps_lab1.exception.*;
 import com.example.blps_lab1.model.Recipe;
 import com.example.blps_lab1.service.RecipeService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
+@Validated
 @RestController
 @RequestMapping("/cook/recipe")
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -28,7 +32,7 @@ public class RecipeController {
     }
 
     @PostMapping("/add_recipe")
-    public ResponseEntity<?> addRecipe(@RequestBody AddRecipeRequest addRecipeRequest, HttpServletRequest httpServletRequest) throws
+    public ResponseEntity<?> addRecipe(@Valid @RequestBody AddRecipeRequest addRecipeRequest, HttpServletRequest httpServletRequest) throws
             DishNotFoundException, TasteNotFoundException, CuisineNotFoundException, UsernameNotFoundException,
             IngredientNotFoundException {
         String login = jwtUtils.getLoginFromJwtToken(authTokenFilter.parseJwt(httpServletRequest));
@@ -39,7 +43,7 @@ public class RecipeController {
     }
 
     @DeleteMapping("/delete_recipe")
-    public ResponseEntity<?> deleteRecipe(@RequestBody DeleteRecipeRequest deleteRecipeRequest, HttpServletRequest httpServletRequest)
+    public ResponseEntity<?> deleteRecipe(@Valid @RequestBody DeleteRecipeRequest deleteRecipeRequest, HttpServletRequest httpServletRequest)
             throws RecipeNotFoundException, UsernameNotFoundException, NotOwnerException {
         String login = jwtUtils.getLoginFromJwtToken(authTokenFilter.parseJwt(httpServletRequest));
 
@@ -49,7 +53,7 @@ public class RecipeController {
     }
 
     @PutMapping("/update_recipe")
-    public ResponseEntity<?> updateRecipe(@RequestBody UpdateRecipeRequest updateRecipeRequest, HttpServletRequest httpServletRequest) throws
+    public ResponseEntity<?> updateRecipe(@Valid @RequestBody UpdateRecipeRequest updateRecipeRequest, HttpServletRequest httpServletRequest) throws
             DishNotFoundException, RecipeNotFoundException,
             UsernameNotFoundException, NotOwnerException,
             CuisineNotFoundException, TasteNotFoundException, IngredientNotFoundException {
@@ -65,7 +69,7 @@ public class RecipeController {
     }
 
     @GetMapping("/get_recipe")
-    public ResponseEntity<?> getRecipe(HttpServletRequest httpServletRequest, GetRecipeRequest getRecipeRequest)
+    public ResponseEntity<?> getRecipe(HttpServletRequest httpServletRequest, @Valid GetRecipeRequest getRecipeRequest)
             throws RecipeNotFoundException {
         Recipe recipe = recipeService.findRecipeById(getRecipeRequest.getRecipe_id());
         return ResponseEntity.ok(recipe);
