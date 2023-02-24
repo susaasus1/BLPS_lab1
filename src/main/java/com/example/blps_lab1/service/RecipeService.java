@@ -41,11 +41,11 @@ public class RecipeService {
 
     public Recipe saveRecipe(String login, AddRecipeRequest addRecipeRequest) throws DishNotFoundException,
             UsernameNotFoundException, CuisineNotFoundException, TasteNotFoundException, IngredientNotFoundException {
-        Dish dish = dishService.findDishByName(addRecipeRequest.getDish_name());
+        Dish dish = dishService.findDishByName(addRecipeRequest.getDishName());
         User user = userService.findUserByLogin(login);
-        NationalCuisine nationalCuisine = nationalCuisineService.findNationalCuisineByName(addRecipeRequest.getNationalCuisine_name());
-        List<Tastes> tastesList = tastesService.findAllTastesByTasteNames(addRecipeRequest.getTastes_names());
-        List<Ingredients> ingredientsList = ingredientsService.findAllIngredientsByNames(addRecipeRequest.getIngredients_names());
+        NationalCuisine nationalCuisine = nationalCuisineService.findNationalCuisineByName(addRecipeRequest.getNationalCuisineName());
+        List<Tastes> tastesList = tastesService.findAllTastesByTasteNames(addRecipeRequest.getTastesNames());
+        List<Ingredients> ingredientsList = ingredientsService.findAllIngredientsByNames(addRecipeRequest.getIngredientsNames());
         Recipe recipe = new Recipe(addRecipeRequest.getDescription(),
                 addRecipeRequest.getCountPortion(), user, nationalCuisine, dish, tastesList, ingredientsList);
         recipeRepository.save(recipe);
@@ -63,7 +63,7 @@ public class RecipeService {
     }
 
     public void deleteRecipe(String login, DeleteRecipeRequest deleteRecipeRequest) throws RecipeNotFoundException, UsernameNotFoundException, NotOwnerException {
-        Recipe recipe = findRecipeById(deleteRecipeRequest.getRecipe_id());
+        Recipe recipe = findRecipeById(deleteRecipeRequest.getRecipeId());
         User user = userService.findUserByLogin(login);
         checkUserOnRecipeOwner(user, recipe);
 
@@ -73,14 +73,14 @@ public class RecipeService {
     public void updateRecipe(String login, UpdateRecipeRequest updateRecipeRequest) throws
             DishNotFoundException, RecipeNotFoundException, UsernameNotFoundException,
             NotOwnerException, CuisineNotFoundException, TasteNotFoundException, IngredientNotFoundException {
-        Recipe recipe = findRecipeById(updateRecipeRequest.getRecipe_id());
+        Recipe recipe = findRecipeById(updateRecipeRequest.getRecipeId());
         User user = userService.findUserByLogin(login);
 
         checkUserOnRecipeOwner(user, recipe);
 
 
-        if (updateRecipeRequest.getDish_name() != null) {
-            Dish dish = dishService.findDishByName(updateRecipeRequest.getDish_name());
+        if (updateRecipeRequest.getDishName() != null) {
+            Dish dish = dishService.findDishByName(updateRecipeRequest.getDishName());
             recipe.setDish(dish);
         }
 
@@ -92,21 +92,21 @@ public class RecipeService {
             recipe.setCountPortion(updateRecipeRequest.getCountPortion());
         }
 
-        if (updateRecipeRequest.getNationalCuisine_name() != null) {
+        if (updateRecipeRequest.getNationalCuisineName() != null) {
             NationalCuisine nationalCuisine = nationalCuisineService.
-                    findNationalCuisineByName(updateRecipeRequest.getNationalCuisine_name());
+                    findNationalCuisineByName(updateRecipeRequest.getNationalCuisineName());
             recipe.setNationalCuisine(nationalCuisine);
         }
 
-        if (updateRecipeRequest.getTastes_names() != null) {
+        if (updateRecipeRequest.getTastesNames() != null) {
             List<Tastes> tastesList = tastesService.
-                    findAllTastesByTasteNames(updateRecipeRequest.getTastes_names());
+                    findAllTastesByTasteNames(updateRecipeRequest.getTastesNames());
             recipe.setTastes(tastesList);
         }
 
-        if (updateRecipeRequest.getIngredients_names() != null) {
+        if (updateRecipeRequest.getIngredientsNames() != null) {
             List<Ingredients> ingredientsList = ingredientsService.
-                    findAllIngredientsByNames(updateRecipeRequest.getIngredients_names());
+                    findAllIngredientsByNames(updateRecipeRequest.getIngredientsNames());
             recipe.setIngredients(ingredientsList);
         }
 

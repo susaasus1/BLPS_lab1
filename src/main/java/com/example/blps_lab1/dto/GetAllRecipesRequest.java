@@ -11,7 +11,6 @@ public class GetAllRecipesRequest {
 
     private boolean desc;
 
-
     private String nationalCuisine;
 
     private String dish;

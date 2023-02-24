@@ -53,7 +53,7 @@ public class RecipeController {
 
         recipeService.deleteRecipe(login, deleteRecipeRequest);
         return ResponseEntity.ok(new SuccessResponse
-                ("Рецепт с номером " + deleteRecipeRequest.getRecipe_id() + " был успешно удален!"));
+                ("Рецепт с номером " + deleteRecipeRequest.getRecipeId() + " был успешно удален!"));
     }
 
     @PutMapping("/update_recipe")
@@ -63,10 +63,10 @@ public class RecipeController {
             CuisineNotFoundException, TasteNotFoundException, IngredientNotFoundException {
         String login = jwtUtils.getLoginFromJwtToken(authTokenFilter.parseJwt(httpServletRequest));
         recipeService.updateRecipe(login, updateRecipeRequest);
-        return ResponseEntity.ok(new SuccessResponse("Рецепт с номером " + updateRecipeRequest.getRecipe_id() + " был успешно обновлен!"));
+        return ResponseEntity.ok(new SuccessResponse("Рецепт с номером " + updateRecipeRequest.getRecipeId() + " был успешно обновлен!"));
     }
 
-    @GetMapping("/get_all_recipes")
+    @PostMapping("/search")
     public ResponseEntity<?> getAllRecipes(@RequestBody GetAllRecipesRequest getAllRecipesRequest) throws CuisineNotFoundException, DishNotFoundException {
         List<Recipe> allRecipes = recipeService.getAllRecipes(getAllRecipesRequest);
         List<RecipeResponse> recipeResponses = new ArrayList<>();
@@ -79,10 +79,10 @@ public class RecipeController {
         return ResponseEntity.ok(recipeResponses);
     }
 
-    @GetMapping("/get_recipe")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getRecipe(@Valid @RequestBody GetRecipeRequest getRecipeRequest)
             throws RecipeNotFoundException {
-        Recipe recipe = recipeService.findRecipeById(getRecipeRequest.getRecipe_id());
+        Recipe recipe = recipeService.findRecipeById(getRecipeRequest.getRecipeId());
         return ResponseEntity.ok(new RecipeResponse(recipe.getId(),
                 recipe.getDescription(), recipe.getCountPortion(), recipe.getUser().getLogin(),
                 recipe.getNationalCuisine(), recipe.getDish(), recipe.getTastes(),

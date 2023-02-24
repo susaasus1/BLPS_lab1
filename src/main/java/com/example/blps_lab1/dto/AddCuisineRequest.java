@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AddCuisineRequest {
     @NotBlank(message = "Укажите название кухни!")
-    @Size(min = 1, max = 32, message = "Укажите название кухни! От 1 до 64 символов")
+    @Size(min = 1, max = 64, message = "Укажите название кухни! От 1 до 64 символов")
     private String cuisine;
 
     public AddCuisineRequest(String cuisine) {

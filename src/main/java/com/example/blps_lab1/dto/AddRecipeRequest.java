@@ -11,7 +11,7 @@ import java.util.List;
 public class AddRecipeRequest {
     @NotBlank(message = "Укажите название блюда!")
     @Size(min = 1, max = 255, message = "Укажите название блюда! От 1 до 255 символов")
-    private String dish_name;
+    private String dishName;
 
     @NotBlank(message = "Укажите описание рецепта!")
     @Size(min = 1, max = 4096, message = "Укажите описание рецепта! От 1 до 4096 символов")
@@ -23,23 +23,23 @@ public class AddRecipeRequest {
 
     @NotBlank(message = "Укажите национальную кухню!")
     @Size(min = 1, max = 64, message = "Укажите национальную кухню! От 1 до 64 символов")
-    private String nationalCuisine_name;
+    private String nationalCuisineName;
 
     @NotNull(message = "Укажите вкусы!")
-    private List<String> tastes_names;
+    private List<String> tastesNames;
 
     @NotNull(message = "Укажите ингредиенты!")
-    private List<String> ingredients_names;
+    private List<String> ingredientsNames;
 
 
-    public AddRecipeRequest(String dish_name, String description, Integer countPortion,
-                            String nationalCuisine_name, List<String> tastes_names, List<String> ingredients_names) {
-        this.dish_name = dish_name;
+    public AddRecipeRequest(String dishName, String description, Integer countPortion,
+                            String nationalCuisineName, List<String> tastesNames, List<String> ingredientsNames) {
+        this.dishName = dishName;
         this.description = description;
         this.countPortion = countPortion;
-        this.nationalCuisine_name = nationalCuisine_name;
-        this.tastes_names = tastes_names;
-        this.ingredients_names = ingredients_names;
+        this.nationalCuisineName = nationalCuisineName;
+        this.tastesNames = tastesNames;
+        this.ingredientsNames = ingredientsNames;
     }
 
 }

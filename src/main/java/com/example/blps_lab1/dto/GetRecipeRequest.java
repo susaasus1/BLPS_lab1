@@ -1,6 +1,5 @@
 package com.example.blps_lab1.dto;
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,9 +8,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class GetRecipeRequest {
     @NotNull(message = "Укажите номер рецепта!")
-    private Long recipe_id;
+    private Long recipeId;
 
-    public GetRecipeRequest(Long recipe_id) {
-        this.recipe_id = recipe_id;
+    public GetRecipeRequest(Long recipeId) {
+        this.recipeId = recipeId;
     }
 }

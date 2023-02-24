@@ -8,10 +8,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DeleteRecipeRequest {
     @NotNull(message = "Укажите номер рецепта!")
-    private Long recipe_id;
+    private Long recipeId;
 
-    public DeleteRecipeRequest(Long recipe_id) {
-        this.recipe_id = recipe_id;
+    public DeleteRecipeRequest(Long recipeId) {
+        this.recipeId = recipeId;
     }
 
 }

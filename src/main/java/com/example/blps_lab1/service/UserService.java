@@ -78,7 +78,6 @@ public class UserService {
         if (checkEmailOnExist(signUpRequest.getEmail()))
             throw new UserAlreadyExistException("Эта почта уже занята! Попробуйте другую");
 
-
         Set<Role> user_roles = new HashSet<>();
         Role userRole = roleRepository
                 .findByName(ERole.ROLE_USER)
