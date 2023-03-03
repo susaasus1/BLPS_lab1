@@ -1,6 +1,10 @@
 package com.example.blps_lab1.controller;
 
-import com.example.blps_lab1.dto.*;
+import com.example.blps_lab1.dto.request.AddCuisineRequest;
+import com.example.blps_lab1.dto.request.AddDishRequest;
+import com.example.blps_lab1.dto.request.AddIngredientRequest;
+import com.example.blps_lab1.dto.request.AddTasteRequest;
+import com.example.blps_lab1.dto.response.SuccessResponse;
 import com.example.blps_lab1.exception.CuisineAlreadyExistException;
 import com.example.blps_lab1.exception.DishAlreadyExistException;
 import com.example.blps_lab1.exception.IngredientAlreadyExistException;

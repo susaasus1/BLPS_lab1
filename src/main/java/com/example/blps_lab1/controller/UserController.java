@@ -1,8 +1,8 @@
 package com.example.blps_lab1.controller;
 
-import com.example.blps_lab1.dto.SignInRequest;
-import com.example.blps_lab1.dto.SignUpRequest;
-import com.example.blps_lab1.dto.SuccessResponse;
+import com.example.blps_lab1.dto.request.SignInRequest;
+import com.example.blps_lab1.dto.request.SignUpRequest;
+import com.example.blps_lab1.dto.response.SuccessResponse;
 import com.example.blps_lab1.exception.RoleNotFoundException;
 import com.example.blps_lab1.exception.UserAlreadyExistException;
 import com.example.blps_lab1.model.Jwt;

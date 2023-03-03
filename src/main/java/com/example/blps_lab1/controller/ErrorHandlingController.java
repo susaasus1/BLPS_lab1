@@ -1,6 +1,6 @@
 package com.example.blps_lab1.controller;
 
-import com.example.blps_lab1.dto.ErrorResponse;
+import com.example.blps_lab1.dto.response.ErrorResponse;
 import com.example.blps_lab1.exception.*;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;

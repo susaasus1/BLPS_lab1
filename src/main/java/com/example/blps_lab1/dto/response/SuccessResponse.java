@@ -1,4 +1,4 @@
-package com.example.blps_lab1.dto;
+package com.example.blps_lab1.dto.response;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

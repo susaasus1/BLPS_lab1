@@ -1,6 +1,6 @@
 package com.example.blps_lab1.service;
 
-import com.example.blps_lab1.dto.AddTasteRequest;
+import com.example.blps_lab1.dto.request.AddTasteRequest;
 import com.example.blps_lab1.exception.TasteAlreadyExistException;
 import com.example.blps_lab1.exception.TasteNotFoundException;
 import com.example.blps_lab1.model.Tastes;

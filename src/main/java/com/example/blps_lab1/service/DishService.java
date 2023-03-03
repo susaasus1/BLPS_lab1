@@ -1,6 +1,6 @@
 package com.example.blps_lab1.service;
 
-import com.example.blps_lab1.dto.AddDishRequest;
+import com.example.blps_lab1.dto.request.AddDishRequest;
 import com.example.blps_lab1.exception.DishAlreadyExistException;
 import com.example.blps_lab1.exception.DishNotFoundException;
 import com.example.blps_lab1.model.Dish;

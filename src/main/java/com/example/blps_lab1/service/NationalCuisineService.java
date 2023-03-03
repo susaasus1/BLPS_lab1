@@ -1,6 +1,6 @@
 package com.example.blps_lab1.service;
 
-import com.example.blps_lab1.dto.AddCuisineRequest;
+import com.example.blps_lab1.dto.request.AddCuisineRequest;
 import com.example.blps_lab1.exception.CuisineAlreadyExistException;
 import com.example.blps_lab1.exception.CuisineNotFoundException;
 import com.example.blps_lab1.model.NationalCuisine;

@@ -1,9 +1,9 @@
 package com.example.blps_lab1.service;
 
-import com.example.blps_lab1.dto.AddRecipeRequest;
-import com.example.blps_lab1.dto.DeleteRecipeRequest;
-import com.example.blps_lab1.dto.GetAllRecipesRequest;
-import com.example.blps_lab1.dto.UpdateRecipeRequest;
+import com.example.blps_lab1.dto.request.AddRecipeRequest;
+import com.example.blps_lab1.dto.request.DeleteRecipeRequest;
+import com.example.blps_lab1.dto.request.GetAllRecipesRequest;
+import com.example.blps_lab1.dto.request.UpdateRecipeRequest;
 import com.example.blps_lab1.exception.*;
 import com.example.blps_lab1.model.*;
 import com.example.blps_lab1.repository.RecipeRepository;

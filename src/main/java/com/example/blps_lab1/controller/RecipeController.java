@@ -2,7 +2,9 @@ package com.example.blps_lab1.controller;
 
 import com.example.blps_lab1.config.jwt.AuthTokenFilter;
 import com.example.blps_lab1.config.jwt.JwtUtils;
-import com.example.blps_lab1.dto.*;
+import com.example.blps_lab1.dto.request.*;
+import com.example.blps_lab1.dto.response.RecipeResponse;
+import com.example.blps_lab1.dto.response.SuccessResponse;
 import com.example.blps_lab1.exception.*;
 import com.example.blps_lab1.model.Recipe;
 import com.example.blps_lab1.service.RecipeService;
