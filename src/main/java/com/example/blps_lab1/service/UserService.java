@@ -1,8 +1,6 @@
 package com.example.blps_lab1.service;
 
 import com.example.blps_lab1.config.jwt.JwtUtils;
-import com.example.blps_lab1.dto.request.SignInRequest;
-import com.example.blps_lab1.dto.request.SignUpRequest;
 import com.example.blps_lab1.exception.RoleNotFoundException;
 import com.example.blps_lab1.exception.UserAlreadyExistException;
 import com.example.blps_lab1.model.ERole;
@@ -42,11 +40,11 @@ public class UserService {
         this.roleRepository = roleRepository;
     }
 
-    public Jwt authUser(SignInRequest signInRequest) throws BadCredentialsException {
+    public Jwt authUser(String login, String password) throws BadCredentialsException {
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(
-                        signInRequest.getLogin(),
-                        signInRequest.getPassword()));
+                        login,
+                        password));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtUtils.generateJwtToken(authentication);
@@ -71,11 +69,11 @@ public class UserService {
     }
 
 
-    public User saveUser(SignUpRequest signUpRequest) throws UserAlreadyExistException, RoleNotFoundException {
-        if (checkLoginOnExist(signUpRequest.getLogin()))
+    public User saveUser(String login, String password, String email) throws UserAlreadyExistException, RoleNotFoundException {
+        if (checkLoginOnExist(login))
             throw new UserAlreadyExistException("Этот логин уже занят! Попробуйте другой");
 
-        if (checkEmailOnExist(signUpRequest.getEmail()))
+        if (checkEmailOnExist(email))
             throw new UserAlreadyExistException("Эта почта уже занята! Попробуйте другую");
 
         Set<Role> user_roles = new HashSet<>();
@@ -84,8 +82,8 @@ public class UserService {
                 .orElseThrow(() -> new RoleNotFoundException("Роль USER не найдена!"));
         user_roles.add(userRole);
 
-        User user = new User(signUpRequest.getLogin(), passwordEncoder.encode(signUpRequest.getPassword()),
-                signUpRequest.getEmail(), user_roles);
+        User user = new User(login, passwordEncoder.encode(password),
+                email, user_roles);
 
         userRepository.save(user);
         return user;

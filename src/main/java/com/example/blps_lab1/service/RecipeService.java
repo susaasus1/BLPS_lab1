@@ -1,12 +1,12 @@
 package com.example.blps_lab1.service;
 
-import com.example.blps_lab1.dto.request.AddRecipeRequest;
-import com.example.blps_lab1.dto.request.DeleteRecipeRequest;
-import com.example.blps_lab1.dto.request.GetAllRecipesRequest;
-import com.example.blps_lab1.dto.request.UpdateRecipeRequest;
 import com.example.blps_lab1.exception.*;
 import com.example.blps_lab1.model.*;
 import com.example.blps_lab1.repository.RecipeRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -39,15 +39,17 @@ public class RecipeService {
     }
 
 
-    public Recipe saveRecipe(String login, AddRecipeRequest addRecipeRequest) throws DishNotFoundException,
+    public Recipe saveRecipe(String login, String dishName, String description,
+                             Integer countPortion, String nationalCuisineName,
+                             List<String> tastesNames, List<String> ingredientsNames) throws DishNotFoundException,
             UsernameNotFoundException, CuisineNotFoundException, TasteNotFoundException, IngredientNotFoundException {
-        Dish dish = dishService.findDishByName(addRecipeRequest.getDishName());
+        Dish dish = dishService.findDishByName(dishName);
         User user = userService.findUserByLogin(login);
-        NationalCuisine nationalCuisine = nationalCuisineService.findNationalCuisineByName(addRecipeRequest.getNationalCuisineName());
-        List<Tastes> tastesList = tastesService.findAllTastesByTasteNames(addRecipeRequest.getTastesNames());
-        List<Ingredients> ingredientsList = ingredientsService.findAllIngredientsByNames(addRecipeRequest.getIngredientsNames());
-        Recipe recipe = new Recipe(addRecipeRequest.getDescription(),
-                addRecipeRequest.getCountPortion(), user, nationalCuisine, dish, tastesList, ingredientsList);
+        NationalCuisine nationalCuisine = nationalCuisineService.findNationalCuisineByName(nationalCuisineName);
+        List<Tastes> tastesList = tastesService.findAllTastesByTasteNames(tastesNames);
+        List<Ingredients> ingredientsList = ingredientsService.findAllIngredientsByNames(ingredientsNames);
+        Recipe recipe = new Recipe(description,
+                countPortion, user, nationalCuisine, dish, tastesList, ingredientsList);
         recipeRepository.save(recipe);
         return recipe;
     }
@@ -62,106 +64,63 @@ public class RecipeService {
                     " не является владельцем рецепта по номеру " + recipe.getId());
     }
 
-    public void deleteRecipe(String login, DeleteRecipeRequest deleteRecipeRequest) throws RecipeNotFoundException, UsernameNotFoundException, NotOwnerException {
-        Recipe recipe = findRecipeById(deleteRecipeRequest.getRecipeId());
+    public void deleteRecipe(String login, Long id) throws RecipeNotFoundException, UsernameNotFoundException, NotOwnerException {
+        Recipe recipe = findRecipeById(id);
         User user = userService.findUserByLogin(login);
         checkUserOnRecipeOwner(user, recipe);
 
         recipeRepository.delete(recipe);
     }
 
-    public void updateRecipe(String login, UpdateRecipeRequest updateRecipeRequest) throws
+    public void updateRecipe(String login, Long id, String dishName, String description,
+                             Integer countPortion, String nationalCuisineName,
+                             List<String> tastesNames, List<String> ingredientsNames) throws
             DishNotFoundException, RecipeNotFoundException, UsernameNotFoundException,
             NotOwnerException, CuisineNotFoundException, TasteNotFoundException, IngredientNotFoundException {
-        Recipe recipe = findRecipeById(updateRecipeRequest.getRecipeId());
+        Recipe recipe = findRecipeById(id);
         User user = userService.findUserByLogin(login);
 
         checkUserOnRecipeOwner(user, recipe);
 
+        Dish dish = dishService.findDishByName(dishName);
+        NationalCuisine nationalCuisine = nationalCuisineService.
+                findNationalCuisineByName(nationalCuisineName);
+        List<Tastes> tastesList = tastesService.
+                findAllTastesByTasteNames(tastesNames);
+        List<Ingredients> ingredientsList = ingredientsService.
+                findAllIngredientsByNames(ingredientsNames);
 
-        if (updateRecipeRequest.getDishName() != null) {
-            Dish dish = dishService.findDishByName(updateRecipeRequest.getDishName());
-            recipe.setDish(dish);
-        }
-
-        if (updateRecipeRequest.getDescription() != null) {
-            recipe.setDescription(updateRecipeRequest.getDescription());
-        }
-
-        if (updateRecipeRequest.getCountPortion() != null) {
-            recipe.setCountPortion(updateRecipeRequest.getCountPortion());
-        }
-
-        if (updateRecipeRequest.getNationalCuisineName() != null) {
-            NationalCuisine nationalCuisine = nationalCuisineService.
-                    findNationalCuisineByName(updateRecipeRequest.getNationalCuisineName());
-            recipe.setNationalCuisine(nationalCuisine);
-        }
-
-        if (updateRecipeRequest.getTastesNames() != null) {
-            List<Tastes> tastesList = tastesService.
-                    findAllTastesByTasteNames(updateRecipeRequest.getTastesNames());
-            recipe.setTastes(tastesList);
-        }
-
-        if (updateRecipeRequest.getIngredientsNames() != null) {
-            List<Ingredients> ingredientsList = ingredientsService.
-                    findAllIngredientsByNames(updateRecipeRequest.getIngredientsNames());
-            recipe.setIngredients(ingredientsList);
-        }
-
+        recipe.setDish(dish);
+        recipe.setNationalCuisine(nationalCuisine);
+        recipe.setIngredients(ingredientsList);
+        recipe.setTastes(tastesList);
+        recipe.setDescription(description);
+        recipe.setCountPortion(countPortion);
 
         recipeRepository.save(recipe);
     }
 
-    public List<Recipe> getAllRecipes(GetAllRecipesRequest getAllRecipesRequest)
-            throws CuisineNotFoundException, DishNotFoundException {
-        List<Recipe> recipeList;
-        if (getAllRecipesRequest.getNationalCuisine() != null && getAllRecipesRequest.getDish() != null) {
-            NationalCuisine nationalCuisine = nationalCuisineService.findNationalCuisineByName(getAllRecipesRequest.getNationalCuisine());
-            Dish dish = dishService.findDishByName(getAllRecipesRequest.getDish());
-            recipeList = recipeRepository.findAllByNationalCuisineAndDish(nationalCuisine, dish);
-        } else if (getAllRecipesRequest.getNationalCuisine() != null) {
-            NationalCuisine nationalCuisine = nationalCuisineService.findNationalCuisineByName(getAllRecipesRequest.getNationalCuisine());
-            recipeList = recipeRepository.findAllByNationalCuisine(nationalCuisine);
-        } else if (getAllRecipesRequest.getDish() != null) {
-            Dish dish = dishService.findDishByName(getAllRecipesRequest.getDish());
-            recipeList = recipeRepository.findAllByDish(dish);
-        } else {
-            recipeList = recipeRepository.findAll();
-        }
+    public Page<Recipe> getAllRecipes(int page, int size, String nationalCuisine,
+                                      String dish, List<String> sortList, String sortOrder) {
 
-        List<Recipe> recipeListWithTastes = new ArrayList<>();
-        if (getAllRecipesRequest.getTastes() != null) {
-            recipeList.forEach(recipe -> {
-                List<String> tastes = recipe.getTastes().stream()
-                        .map(Tastes::getTaste).toList();
-                if (new HashSet<>(tastes).containsAll(getAllRecipesRequest.getTastes())) {
-                    recipeListWithTastes.add(recipe);
-                }
-            });
-            recipeList = recipeListWithTastes;
-        }
+        Pageable pageable = PageRequest.of(page, size, Sort.by(createSortOrder(sortList, sortOrder)));
+        return recipeRepository.findByNationalCuisineLikeAndDishLike(nationalCuisine, dish, pageable);
 
-        List<Recipe> recipeListWithIngredients = new ArrayList<>();
-        if (getAllRecipesRequest.getIngredients() != null) {
-            recipeList.forEach(recipe -> {
-                List<String> ingredients = recipe.getIngredients().stream()
-                        .map(Ingredients::getName).toList();
-                if (new HashSet<>(ingredients).containsAll(getAllRecipesRequest.getIngredients())) {
-                    recipeListWithIngredients.add(recipe);
-                }
-            });
-            recipeList = recipeListWithIngredients;
-        }
-
-
-        recipeList.sort(Comparator.comparing(Recipe::getId));
-        if (getAllRecipesRequest.isDesc()) Collections.reverse(recipeList);
-
-        return recipeList;
     }
 
+    private List<Sort.Order> createSortOrder(List<String> sortList, String sortDirection) {
+        List<Sort.Order> sorts = new ArrayList<>();
+        Sort.Direction direction;
+        for (String sort : sortList) {
+            if (sortDirection != null) {
+                direction = Sort.Direction.fromString(sortDirection);
+            } else {
+                direction = Sort.Direction.DESC;
+            }
+            sorts.add(new Sort.Order(direction, sort));
+        }
+        return sorts;
+    }
 
 
 }

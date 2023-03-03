@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Validated
 @RestController
-@RequestMapping("/cook/auth")
+@RequestMapping("/auth")
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class UserController {
 
@@ -25,22 +25,21 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/sign_in")
+    @PostMapping("login")
     public ResponseEntity<?> authUser(@Valid @RequestBody SignInRequest signInRequest) throws BadCredentialsException {
 
-
-        Jwt jwt = userService.authUser(signInRequest);
+        Jwt jwt = userService.authUser(signInRequest.getLogin(), signInRequest.getPassword());
 
         return ResponseEntity.ok(new SuccessResponse(jwt.getToken()));
 
 
     }
 
-    @PostMapping("/sign_up")
+    @PostMapping()
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) throws UserAlreadyExistException, RoleNotFoundException {
 
-
-        userService.saveUser(signUpRequest);
+        userService.saveUser(signUpRequest.getLogin(), signUpRequest.getPassword(),
+                signUpRequest.getEmail());
 
         return ResponseEntity.ok(new SuccessResponse("Пользователь успешно зарегистрирован!"));
 

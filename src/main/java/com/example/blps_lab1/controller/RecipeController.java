@@ -10,6 +10,7 @@ import com.example.blps_lab1.model.Recipe;
 import com.example.blps_lab1.service.RecipeService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.annotation.Validated;
@@ -20,7 +21,7 @@ import java.util.List;
 
 @Validated
 @RestController
-@RequestMapping("/cook/recipe")
+@RequestMapping("/recipe")
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class RecipeController {
     private final RecipeService recipeService;
@@ -34,13 +35,17 @@ public class RecipeController {
         this.authTokenFilter = authTokenFilter;
     }
 
-    @PostMapping("/add_recipe")
-    public ResponseEntity<?> addRecipe(@Valid @RequestBody AddRecipeRequest addRecipeRequest, HttpServletRequest httpServletRequest) throws
+    @PostMapping()
+    public ResponseEntity<?> newRecipe(@Valid @RequestBody AddRecipeRequest addRecipeRequest,
+                                       HttpServletRequest httpServletRequest) throws
             DishNotFoundException, TasteNotFoundException, CuisineNotFoundException, UsernameNotFoundException,
             IngredientNotFoundException {
         String login = jwtUtils.getLoginFromJwtToken(authTokenFilter.parseJwt(httpServletRequest));
 
-        Recipe recipe = recipeService.saveRecipe(login, addRecipeRequest);
+        Recipe recipe = recipeService.saveRecipe(login, addRecipeRequest.getDishName(),
+                addRecipeRequest.getDescription(),
+                addRecipeRequest.getCountPortion(), addRecipeRequest.getNationalCuisineName(), addRecipeRequest.getTastesNames(),
+                addRecipeRequest.getIngredientsNames());
 
         return ResponseEntity.ok(new RecipeResponse(recipe.getId(),
                 recipe.getDescription(), recipe.getCountPortion(), recipe.getUser().getLogin(),
@@ -48,29 +53,38 @@ public class RecipeController {
                 recipe.getIngredients()));
     }
 
-    @DeleteMapping("/delete_recipe")
-    public ResponseEntity<?> deleteRecipe(@Valid @RequestBody DeleteRecipeRequest deleteRecipeRequest, HttpServletRequest httpServletRequest)
+    @DeleteMapping()
+    public ResponseEntity<?> deleteRecipe(@RequestParam Long id, HttpServletRequest httpServletRequest)
             throws RecipeNotFoundException, UsernameNotFoundException, NotOwnerException {
         String login = jwtUtils.getLoginFromJwtToken(authTokenFilter.parseJwt(httpServletRequest));
 
-        recipeService.deleteRecipe(login, deleteRecipeRequest);
+        recipeService.deleteRecipe(login, id);
         return ResponseEntity.ok(new SuccessResponse
-                ("Рецепт с номером " + deleteRecipeRequest.getRecipeId() + " был успешно удален!"));
+                ("Рецепт с номером " + id + " был успешно удален!"));
     }
 
-    @PutMapping("/update_recipe")
-    public ResponseEntity<?> updateRecipe(@Valid @RequestBody UpdateRecipeRequest updateRecipeRequest, HttpServletRequest httpServletRequest) throws
+    @PutMapping()
+    public ResponseEntity<?> updateRecipe(@RequestParam Long id,
+                                          @Valid @RequestBody UpdateRecipeRequest updateRecipeRequest,
+                                          HttpServletRequest httpServletRequest) throws
             DishNotFoundException, RecipeNotFoundException,
             UsernameNotFoundException, NotOwnerException,
             CuisineNotFoundException, TasteNotFoundException, IngredientNotFoundException {
         String login = jwtUtils.getLoginFromJwtToken(authTokenFilter.parseJwt(httpServletRequest));
-        recipeService.updateRecipe(login, updateRecipeRequest);
-        return ResponseEntity.ok(new SuccessResponse("Рецепт с номером " + updateRecipeRequest.getRecipeId() + " был успешно обновлен!"));
+        recipeService.updateRecipe(login, id, updateRecipeRequest.getDishName(), updateRecipeRequest.getDescription(),
+                updateRecipeRequest.getCountPortion(), updateRecipeRequest.getNationalCuisineName(),
+                updateRecipeRequest.getTastesNames(), updateRecipeRequest.getIngredientsNames());
+        return ResponseEntity.ok(new SuccessResponse("Рецепт с номером " + id + " был успешно обновлен!"));
     }
 
-    @PostMapping("/search")
-    public ResponseEntity<?> getAllRecipes(@RequestBody GetAllRecipesRequest getAllRecipesRequest) throws CuisineNotFoundException, DishNotFoundException {
-        List<Recipe> allRecipes = recipeService.getAllRecipes(getAllRecipesRequest);
+    @GetMapping()
+    public ResponseEntity<?> getAllRecipes(@RequestParam(defaultValue = "0") int page,
+                                           @RequestParam(defaultValue = "10") int size,
+                                           @RequestParam(defaultValue = "") String nationalCuisine,
+                                           @RequestParam(defaultValue = "") String dish,
+                                           @RequestParam(defaultValue = "") List<String> sortList,
+                                           @RequestParam(defaultValue = "DESC") Sort.Direction sortOrder) {
+        List<Recipe> allRecipes = recipeService.getAllRecipes(page, size, nationalCuisine, dish, sortList, sortOrder.toString()).getContent();
         List<RecipeResponse> recipeResponses = new ArrayList<>();
         allRecipes.forEach(recipe -> {
             recipeResponses.add(new RecipeResponse(recipe.getId(),
@@ -81,10 +95,10 @@ public class RecipeController {
         return ResponseEntity.ok(recipeResponses);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getRecipe(@Valid @RequestBody GetRecipeRequest getRecipeRequest)
+    @GetMapping()
+    public ResponseEntity<?> getRecipe(@RequestParam("id") Long id)
             throws RecipeNotFoundException {
-        Recipe recipe = recipeService.findRecipeById(getRecipeRequest.getRecipeId());
+        Recipe recipe = recipeService.findRecipeById(id);
         return ResponseEntity.ok(new RecipeResponse(recipe.getId(),
                 recipe.getDescription(), recipe.getCountPortion(), recipe.getUser().getLogin(),
                 recipe.getNationalCuisine(), recipe.getDish(), recipe.getTastes(),
