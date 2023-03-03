@@ -20,9 +20,9 @@ public class ErrorHandlingController {
             UserAlreadyExistException.class, RoleNotFoundException.class, DishNotFoundException.class,
             CuisineNotFoundException.class, TasteNotFoundException.class, RecipeNotFoundException.class,
             NotOwnerException.class, IngredientNotFoundException.class, DishAlreadyExistException.class,
-            TasteAlreadyExistException.class, IngredientAlreadyExistException.class, CuisineAlreadyExistException.class
+            TasteAlreadyExistException.class, IngredientAlreadyExistException.class, CuisineAlreadyExistException.class,
+            ResourceNotFoundException.class, IllegalPageParametersException.class
     })
-
     public ResponseEntity<ErrorResponse> handleException(Exception e) {
         ErrorResponse errorResponse = new ErrorResponse(e.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);

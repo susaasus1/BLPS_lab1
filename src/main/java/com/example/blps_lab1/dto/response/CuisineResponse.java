@@ -1,5 +1,8 @@
 package com.example.blps_lab1.dto.response;
 
+import lombok.Data;
+
+@Data
 public class CuisineResponse {
     private Long cuisineId;
     private String cuisine;

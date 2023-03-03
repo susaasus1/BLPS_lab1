@@ -95,8 +95,8 @@ public class RecipeController {
         return ResponseEntity.ok(recipeResponses);
     }
 
-    @GetMapping()
-    public ResponseEntity<?> getRecipe(@RequestParam("id") Long id)
+    @GetMapping("{id}")
+    public ResponseEntity<?> getRecipe(@PathVariable Long id)
             throws RecipeNotFoundException {
         Recipe recipe = recipeService.findRecipeById(id);
         return ResponseEntity.ok(new RecipeResponse(recipe.getId(),

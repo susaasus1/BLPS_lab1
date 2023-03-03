@@ -50,13 +50,12 @@ public class WebSecurityConfig {
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeHttpRequests()
-                .requestMatchers("/cook/auth/**").permitAll()
+                .requestMatchers("/auth/**").permitAll()
                 .requestMatchers("/cook/recipe/add_recipe").hasAnyRole("USER", "ADMIN")
                 .requestMatchers("/cook/recipe/delete_recipe").hasAnyRole("USER", "ADMIN")
                 .requestMatchers("/cook/recipe/update_recipe").hasAnyRole("USER", "ADMIN")
                 .requestMatchers("/cook/recipe/get_all_recipes").permitAll()
                 .requestMatchers("/cook/recipe/get_recipe").permitAll()
-                .requestMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated();
 
 
