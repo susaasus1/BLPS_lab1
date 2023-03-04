@@ -49,14 +49,7 @@ public class WebSecurityConfig {
         http.cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeHttpRequests()
-                .requestMatchers("/auth/**").permitAll()
-                .requestMatchers("/cook/recipe/add_recipe").hasAnyRole("USER", "ADMIN")
-                .requestMatchers("/cook/recipe/delete_recipe").hasAnyRole("USER", "ADMIN")
-                .requestMatchers("/cook/recipe/update_recipe").hasAnyRole("USER", "ADMIN")
-                .requestMatchers("/cook/recipe/get_all_recipes").permitAll()
-                .requestMatchers("/cook/recipe/get_recipe").permitAll()
-                .anyRequest().authenticated();
+                .authorizeHttpRequests().anyRequest().permitAll();
 
 
         http.addFilterBefore(authenticationJwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
