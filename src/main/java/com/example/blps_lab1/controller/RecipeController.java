@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +36,7 @@ public class RecipeController {
         this.authTokenFilter = authTokenFilter;
     }
 
+    @Secured({"ADMIN","USER"})
     @PostMapping()
     public ResponseEntity<?> newRecipe(@Valid @RequestBody AddRecipeRequest addRecipeRequest,
                                        HttpServletRequest httpServletRequest) throws
@@ -53,6 +55,7 @@ public class RecipeController {
                 recipe.getIngredients()));
     }
 
+    @Secured({"ADMIN","USER"})
     @DeleteMapping()
     public ResponseEntity<?> deleteRecipe(@RequestParam Long id, HttpServletRequest httpServletRequest)
             throws RecipeNotFoundException, UsernameNotFoundException, NotOwnerException {
@@ -63,6 +66,8 @@ public class RecipeController {
                 ("Рецепт с номером " + id + " был успешно удален!"));
     }
 
+
+    @Secured({"ADMIN","USER"})
     @PutMapping()
     public ResponseEntity<?> updateRecipe(@RequestParam Long id,
                                           @Valid @RequestBody UpdateRecipeRequest updateRecipeRequest,
