@@ -12,7 +12,7 @@ import com.example.blps_lab1.model.Dish;
 import com.example.blps_lab1.service.DishService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,21 +27,21 @@ public class DishController {
         this.dishService = dishService;
     }
 
-    @Secured("ADMIN")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping()
     public ResponseEntity<?> addDish(@Valid @RequestBody AddDishRequest addDishRequest) throws DishAlreadyExistException {
         dishService.saveDish(addDishRequest.getDishName(), addDishRequest.getDescription());
         return ResponseEntity.ok(new SuccessResponse("Блюдо " + addDishRequest.getDishName() + " успешно добавлено в базу!"));
     }
 
-    @Secured("ADMIN")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping()
     public ResponseEntity<?> deleteDish(@RequestParam("dishId") Long dishId) throws DishNotFoundException {
         dishService.deleteDish(dishId);
         return ResponseEntity.ok(new SuccessResponse("Блюдо с id=" + dishId + " успешно удалено!"));
     }
 
-    @Secured("ADMIN")
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping()
     public ResponseEntity<?> updateDish(@RequestParam("dishId") Long dishId,
                                         @Valid @RequestBody UpdateDishRequest updateDishRequest) throws DishNotFoundException {
@@ -49,13 +49,13 @@ public class DishController {
         return ResponseEntity.ok(new SuccessResponse("Блюдо с id=" + dishId + " успешно обнавлено!"));
     }
 
-    @Secured({"ADMIN", "USER"})
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping()
     public ResponseEntity<?> getAllDishes(@RequestParam(value = "page", defaultValue = "1") int page,
                                           @RequestParam(value = "size", defaultValue = "10") int size) throws IllegalPageParametersException, ResourceNotFoundException {
         return ResponseEntity.ok(dishService.getAllDish(page, size).getContent());
     }
-    @Secured({"ADMIN", "USER"})
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("{dishId}")
     public ResponseEntity<?> getDish(@PathVariable Long dishId) throws DishNotFoundException {
         Dish dish = dishService.getDish(dishId);

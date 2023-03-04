@@ -21,7 +21,7 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 
     List<Recipe> findAllById(Iterable<Long> longs);
 
-    @Query(value = "select r from recipe r JOIN dish d on d.id = r.dish_id " +
+    @Query(value = "select r.id, r.count_portion, r.description,r.dish_id,r.cuisine_id,r.user_login from recipe r JOIN dish d on d.id = r.dish_id " +
             "JOIN national_cuisine nc on nc.id = r.cuisine_id " +
             "WHERE UPPER(nc.cuisine) like CONCAT('%', UPPER(?1),'%') and " +
             "UPPER(d.name) like CONCAT('%',UPPER(?2),'%')", nativeQuery = true)
